@@ -136,7 +136,7 @@ def stddev_from_moving_average(timeseries):
     expAverage = pandas.Series.ewm(series, ignore_na=False, min_periods=0, adjust=True, com=50).mean()
     stdDev = pandas.Series.ewm(series, ignore_na=False, min_periods=0, adjust=True, com=50).std(bias=False)
 
-    return abs(series.iat(-1) - expAverage.iat(-1)) > 3 * stdDev.iat(-1)
+    return abs(series.iat[-1] - expAverage.iat[-1]) > 3 * stdDev.iat[-1]
 
 
 def mean_subtraction_cumulation(timeseries):
