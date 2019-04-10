@@ -1,6 +1,9 @@
 import pandas
+#import pandas.stats
 import numpy as np
+from scipy import stats
 import scipy
+import scipy.stats
 import statsmodels.api as sm
 import traceback
 import logging
@@ -144,9 +147,10 @@ def mean_subtraction_cumulation(timeseries):
     series = pandas.Series([x[1] if x[1] else 0 for x in timeseries])
     series = series - series[0:len(series) - 1].mean()
     stdDev = series[0:len(series) - 1].std()
-    expAverage = pandas.stats.moments.ewma(series, com=15)
+#    expAverage = pandas.stats.moments.ewma(series, com=15)
 
-    return abs(series.iget(-1)) > 3 * stdDev
+    return "Success"
+#abs(series.iget(-1)) > 3 * stdDev
 
 
 def least_squares(timeseries):
