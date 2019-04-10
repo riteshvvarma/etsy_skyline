@@ -4,3 +4,5 @@
 settings.py
 dump.rdb
 nohup.out
+.idea/
+__pycache__/
