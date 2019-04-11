@@ -1,9 +1,6 @@
 import pandas
-#import pandas.stats
 import numpy as np
-from scipy import stats
 import scipy
-import scipy.stats
 import statsmodels.api as sm
 import traceback
 import logging
@@ -67,7 +64,7 @@ def median_absolute_deviation(timeseries):
     if median_deviation == 0:
         return False
 
-    test_statistic = demedianed.iget(-1) / median_deviation
+    test_statistic = demedianed.iat[-1] / median_deviation
 
     # Completely arbitary...triggers if the median deviation is
     # 6 times bigger than the median
@@ -82,6 +79,12 @@ def grubbs(timeseries):
 
     series = scipy.array([x[1] for x in timeseries])
     stdDev = scipy.std(series)
+     # This change avoids spewing warnings on tests:
+     # RuntimeWarning: invalid value encountered in double_scalars
+     # If stdDev is 0 division returns nan which is not > grubbs_score so
+     # return False here
+     if stdDev == 0:
+         return False
     mean = np.mean(series)
     tail_average = tail_avg(timeseries)
     z_score = (tail_average - mean) / stdDev
@@ -131,8 +134,9 @@ def stddev_from_moving_average(timeseries):
     respect to the short term trends.
     """
     series = pandas.Series([x[1] for x in timeseries])
-    #expAverage = pandas.stats.moments.ewma(series, com=50)
-    #stdDev = pandas.stats.moments.ewmstd(series, com=50)
+    # expAverage = pandas.stats.moments.ewma(series, com=50)
+    # stdDev = pandas.stats.moments.ewmstd(series, com=50)
+    # return abs(series.iget(-1) - expAverage.iget(-1)) > 3 * stdDev.iget(-1)
     expAverage = pandas.Series.ewm(series, ignore_na=False, min_periods=0, adjust=True, com=50).mean()
     stdDev = pandas.Series.ewm(series, ignore_na=False, min_periods=0, adjust=True, com=50).std(bias=False)
 
@@ -149,10 +153,9 @@ def mean_subtraction_cumulation(timeseries):
     series = pandas.Series([x[1] if x[1] else 0 for x in timeseries])
     series = series - series[0:len(series) - 1].mean()
     stdDev = series[0:len(series) - 1].std()
-    #expAverage = pandas.stats.moments.ewma(series, com=15)
+    # expAverage = pandas.stats.moments.ewma(series, com=15)
     expAverage = pandas.Series.ewm(series, ignore_na=False, min_periods=0, adjust=True, com=15).mean()
-
-    #return abs(series.iget(-1)) > 3 * stdDev
+    # return abs(series.iget(-1)) > 3 * stdDev
     return abs(series.iat[-1]) > 3 * stdDev
 
 
