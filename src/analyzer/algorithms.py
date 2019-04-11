@@ -83,8 +83,8 @@ def grubbs(timeseries):
      # RuntimeWarning: invalid value encountered in double_scalars
      # If stdDev is 0 division returns nan which is not > grubbs_score so
      # return False here
-     if stdDev == 0:
-         return False
+    if stdDev == 0:
+        return False
     mean = np.mean(series)
     tail_average = tail_avg(timeseries)
     z_score = (tail_average - mean) / stdDev
