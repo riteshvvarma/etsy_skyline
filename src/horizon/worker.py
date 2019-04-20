@@ -46,13 +46,15 @@ class Worker(Process):
         return False
 
     def send_graphite_metric(self, name, value):
+        logger.info('in send graphite metric')
         if settings.GRAPHITE_HOST != '':
+            logger.info('if passed')
             sock = socket.socket()
             sock.connect((settings.GRAPHITE_HOST, settings.CARBON_PORT))
             sock.sendall('%s %s %i\n' % (name, value, time()))
             sock.close()
             return True
-
+        logger.info('if failed')
         return False
 
     def run(self):
