@@ -50,8 +50,13 @@ class Worker(Process):
         if settings.GRAPHITE_HOST != '':
             logger.info('if passed')
             sock = socket.socket()
+            logger.info('printing hosts')
+            logger.info(settings.GRAPHITE_HOST)
+            logger.info(settings.CARBON_PORT)
             sock.connect((settings.GRAPHITE_HOST, settings.CARBON_PORT))
+            logger.info('sock connect passed too')
             sock.sendall('%s %s %i\n' % (name, value, time()))
+            logger.info('send was successfull')
             sock.close()
             return True
         logger.info('if failed')
