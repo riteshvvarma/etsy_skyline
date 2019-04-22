@@ -28,7 +28,7 @@ class NoDataException(Exception):
 
 def seed():
     print 'Loading data over UDP via Horizon...'
-    metric = 'horizon.test.udp'
+    metric = 'horizon.test.udp.ritesh'
     metric_set = 'unique_metrics'
     initial = int(time.time()) - settings.MAX_RESOLUTION
 
