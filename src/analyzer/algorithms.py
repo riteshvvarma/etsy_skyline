@@ -42,7 +42,8 @@ def tail_avg(timeseries):
     to detection.
     """
     try:
-        t = (timeseries[-1][1] + timeseries[-2][1] + timeseries[-3][1]) / 3
+        #t = (timeseries[-1][1] + timeseries[-2][1] + timeseries[-3][1]) / 3
+        t = timeseries[-1][1]
         return t
     except IndexError:
         return timeseries[-1][1]
